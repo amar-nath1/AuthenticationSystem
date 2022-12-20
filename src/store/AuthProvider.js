@@ -6,12 +6,14 @@ import AuthContext from "./auth-context";
 const AuthProvider=(props)=>{
 
 const [authToken,setAuthToken]=useState(null)
+const [email, setEmail]=useState(null)
 
 const isLoggedIn=!!authToken
 
-const loginHandle=(token)=>{
+const loginHandle=(token,email)=>{
 
     setAuthToken(token)
+    setEmail(email)
 }
 
 const logoutHandle=()=>{
@@ -19,6 +21,7 @@ const logoutHandle=()=>{
 }
 
     const authCtxValue={
+        email:email,
         token:authToken,
         isLoggedIn:isLoggedIn,
         loginHandle:loginHandle,

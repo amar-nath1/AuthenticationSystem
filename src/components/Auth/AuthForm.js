@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 
 
@@ -11,7 +11,7 @@ import classes from './AuthForm.module.css';
 const AuthForm = () => {
 
   
-
+const history=useHistory()
   const authCtx=useContext(AuthContext)
  
 const userLoggedIn=authCtx.isLoggedIn
@@ -59,8 +59,9 @@ const userLoggedIn=authCtx.isLoggedIn
         if (res.ok){
           console.log('Login Successful')
           res.json().then((jwt)=>{
-
-            authCtx.loginHandle(jwt.idToken)
+            
+            authCtx.loginHandle(jwt.idToken,jwt.email)
+              history.replace('/home')
             
             
           })
@@ -96,7 +97,10 @@ const userLoggedIn=authCtx.isLoggedIn
     }).then((res)=>{
       setIsLoading(false)
       if (res.ok){
-        console.log('user registered successfully.')
+        res.json().then((data)=>{
+          authCtx.loginHandle(data.idToken,data.email)
+          history.replace('/home')
+        })
       }
       else{
         return res.json().then((data)=>{
@@ -115,8 +119,8 @@ const userLoggedIn=authCtx.isLoggedIn
 
   return (
     <>
-    {userLoggedIn && <Redirect to="/profile" />}
-    {!userLoggedIn && <section className={classes.auth}>
+    
+    <section className={classes.auth}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
       <form onSubmit={submitHandler}>
         <div className={classes.control}>
@@ -139,7 +143,7 @@ const userLoggedIn=authCtx.isLoggedIn
           </button>
         </div>
       </form>
-    </section>}
+    </section>
 
     </>
   );

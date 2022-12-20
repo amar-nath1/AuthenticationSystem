@@ -12,13 +12,16 @@ function App() {
     <Layout>
       <Switch>
         <Route path='/' exact>
-          <HomePage />
+          <AuthPage />
         </Route>
         <Route path='/auth'>
           <AuthPage />
         </Route>
         <Route path='/profile'>
           <UserProfile />
+        </Route>
+        <Route path='/home'>
+        <HomePage></HomePage>
         </Route>
       </Switch>
     </Layout>
