@@ -1,13 +1,20 @@
 import { useContext, useRef, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
+
+
+
 import AuthContext from '../../store/auth-context';
 
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
 
+  
+
   const authCtx=useContext(AuthContext)
  
+const userLoggedIn=authCtx.isLoggedIn
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading,setIsLoading]=useState(false)
@@ -54,6 +61,7 @@ const AuthForm = () => {
           res.json().then((jwt)=>{
 
             authCtx.loginHandle(jwt.idToken)
+            
             
           })
         
@@ -106,7 +114,9 @@ const AuthForm = () => {
   }
 
   return (
-    <section className={classes.auth}>
+    <>
+    {userLoggedIn && <Redirect to="/profile" />}
+    {!userLoggedIn && <section className={classes.auth}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
       <form onSubmit={submitHandler}>
         <div className={classes.control}>
@@ -129,7 +139,9 @@ const AuthForm = () => {
           </button>
         </div>
       </form>
-    </section>
+    </section>}
+
+    </>
   );
 };
 
