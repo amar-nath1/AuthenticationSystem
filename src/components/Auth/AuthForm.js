@@ -1,9 +1,14 @@
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
+import AuthContext from '../../store/auth-context';
 
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
+
+  const authCtx=useContext(AuthContext)
+ 
+
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading,setIsLoading]=useState(false)
 
@@ -46,15 +51,20 @@ const AuthForm = () => {
 
         if (res.ok){
           console.log('Login Successful')
-          res.json().then((jt)=>{console.log(jt.idToken)})
+          res.json().then((jwt)=>{
+
+            authCtx.loginHandle(jwt.idToken)
+            
+          })
         
         }
 
         else{
 
           return res.json().then((data)=>{
-            console.log('error')
-            console.log(data.error.message)
+            if (data.error.message=='INVALID_PASSWORD'){
+              alert('Incorrect Password')
+            }
           })
         }
 
