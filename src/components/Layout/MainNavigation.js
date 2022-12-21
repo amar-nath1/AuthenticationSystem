@@ -21,7 +21,9 @@ const MainNavigation = () => {
       <nav>
         <ul>
 
-          
+          {!isLoggedIn && <li>
+            <Link to='/auth'>Login</Link>
+          </li>}
           {isLoggedIn && <li><Link to='/home'>Home</Link></li>}
           {isLoggedIn && <li>
             <Link to='/profile'>Profile</Link>
@@ -29,7 +31,7 @@ const MainNavigation = () => {
           
           {isLoggedIn && <li>
             <button onClick={()=>{
-              
+              localStorage.removeItem('token')
               authCtx.logoutHandle()
               history.replace('/auth')
               }}>Logout</button>

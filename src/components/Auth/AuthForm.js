@@ -60,7 +60,8 @@ const userLoggedIn=authCtx.isLoggedIn
           console.log('Login Successful')
           res.json().then((jwt)=>{
             
-            authCtx.loginHandle(jwt.idToken,jwt.email)
+            authCtx.loginHandle(jwt.idToken)
+            localStorage.setItem('token',jwt.idToken)
               history.replace('/home')
             
             
